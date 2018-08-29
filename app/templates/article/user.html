@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% load embed_video_tags %}
+
+{% block title %}
+    User
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    {% if articleToCorrect|length > 0 %}
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Article on correction</h1>
+                <hr>
+                <div class="card-columns">
+                    {% for article in articleToCorrect %}
+                        <a href="{% url 'article_select' article.0.id %}">
+                            <div class="card" style="">
+                                <div class="card-body">
+                                    <h3 style="color: black;" class="card-title">{{ article.0.title }}</h3>
+                                    <p class="card-text" style="font-size: 20px;">{{ article.0.hang }}</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                                                       {% if article.1 == None %}
+                            <div>
+                                on waiting
+                            </div>
+                            {% else %}
+                            <div>
+                                    Replace by <a target="_blank" href="{% url 'article_select' article.1.id %}">{{ article.1.title }} </a>
+                                    <div class="center mt-3">
+                                        <a style="font-size: 8px;" class="btn btn-primary inline" href="{% url 'correction_accept' article.0.id article.1.id %}">Accept</a>
+                                        <a style="font-size: 8px;" class="btn btn-danger inline" href="{% url 'correction_refuse' article.0.id article.1.id %}">Refuse</a>
+                                    </div>
+                            </div>
+                            {% endif %}
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <style>
+        .card:hover {
+            cursor: pointer;
+            margin-top: 5px;
+            background-color: rgb(240,240,240);
+        }
+    </style>
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Article box</h1>
+                <hr>
+                <div class="card-columns">
+                    {% for article in articles %}
+                        <a href="{% url 'article_select' article.id %}">
+                            <div class="card" style="">
+                                <div class="card-body">
+                                    <h3 style="color: black;" class="card-title">{{ article.title }}</h3>
+                                    <p class="card-text" style="font-size: 20px;">{{ article.hang }}</p>
+                                        {% if article.status == 'ready' %}
+                                            <small class="text-muted" style="border-left: 2px solid red;">
+                                                <span class="ml-2" style="color:red; ">{{ article.status|upper }}</span>
+                                        </small>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p>
+                            <b>Not article yet</b>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    {% if articles|length > 0 %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mb-5 pb-5 center">
+
+                <div class="row">
+                    <div class="pagination mt-5" style="margin: 0 auto;">
+                        <span class="step-links">
+                            {% if articles.has_previous %}
+                                <a class="btn btn-info" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-info" href="?page={{ articles.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ articles.number }} / {{ articles.paginator.num_pages }}
+                            </span>
+
+                            {% if articles.has_next %}
+                                <a class="btn btn-info" href="?page={{ articles.next_page_number }}">next</a>
+                                <a class="btn btn-info" href="?page={{ articles.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load embed_video_tags %}
+
+{% block title %}
+    User follow
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+        <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 style="pb-4">List follow</h1>
+                <hr>
+                <table class="table mt-4">
+                  <tbody>
+                  {% for follow in follows %}
+                        {% if forloop.counter|divisibleby:2  %}
+                          <tr>
+                        {% else %}
+                          <tr style="background:#dadada;">
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'list_article_from_user' follow.target.id %}">
+                                {{ follow.target }} ({{ follow.target.first_name }} {{ follow.target.last_name }})
+                            </a>
+                        </td>
+                        <td>
+                            <a style="margin-top: -5px;font-size: 10px;" href="{% url 'unfollow' follow.target.id %}" class="btn btn-danger">unfollow</a>
+                        </td>
+                    </tr>
+                  {% empty %}
+                    <p>
+                        <b>You follow nobody</b>
+                    </p>
+                  {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+
+    {% if follows|length > 0 %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mb-5 pb-5 center">
+
+                <div class="row center">
+                    <div class="pagination mt-5 mb-3" style="margin: 0 auto;">
+                        <span class="step-links">
+                            {% if follows.has_previous %}
+                                <a class="btn btn-info" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-info" href="?page={{ follows.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ follows.number }} / {{ follows.paginator.num_pages }}
+                            </span>
+
+                            {% if articles.has_next %}
+                                <a class="btn btn-info" href="?page={{ follows.next_page_number }}">next</a>
+                                <a class="btn btn-info" href="?page={{ follows.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    User
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    <style>
+        .card:hover {
+            cursor: pointer;
+            margin-top: 5px;
+            background-color: rgb(240,240,240);
+        }
+    </style>
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Article of {{ userAuthor }}</h1>
+                <hr>
+                <div class="card-columns">
+                    {% for article in articles %}
+                        <a href="{% url 'article_select' article.id %}">
+                            <div class="card" style="">
+                                <div class="card-body">
+                                    <h3 style="color: black;" class="card-title">{{ article.title }}</h3>
+                                    <p class="card-text" style="font-size: 20px;">{{ article.hang }}</p>
+                                    <p class="card-text"><small class="text-muted">
+                                    </small></p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    {% if articles|length > 0 %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mb-5 pb-5 center">
+
+                <div class="row">
+                    <div class="pagination mt-5" style="margin: 0 auto;">
+                        <span class="step-links">
+                            {% if articles.has_previous %}
+                                <a class="btn btn-info" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-info" href="?page={{ articles.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ articles.number }} / {{ articles.paginator.num_pages }}
+                            </span>
+
+                            {% if articles.has_next %}
+                                <a class="btn btn-info" href="?page={{ articles.next_page_number }}">next</a>
+                                <a class="btn btn-info" href="?page={{ articles.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

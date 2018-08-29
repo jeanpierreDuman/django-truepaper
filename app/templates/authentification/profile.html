@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profile
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="margin-top: 100px">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 style="pb-4">Profile</h1>
+                <hr>
+                <p>
+                    <b>Username : </b>{{ user.username }}
+                </p>
+                <p>
+                    <b>Firstname : </b>{{ user.first_name }}
+                </p>
+                <p>
+                    <b>Lastname : </b>{{ user.last_name }}
+                </p>
+
+                {% if user.parameter.isCorrector == '1' %}
+                    <p><b>Status : </b>You are a corrector</p>
+                {% else %}
+                    <p><b>Status : </b>You are not a corrector</p>
+                {% endif %}
+
+                <p>
+                    <a href="{% url 'response_secret_question' user.id %}">change password</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

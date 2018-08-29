@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Like article
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+    <style>
+        .card:hover {
+            cursor: pointer;
+            margin-top: 5px;
+            background-color: rgb(240,240,240);
+        }
+    </style>
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Article like</h1>
+                <hr>
+                <div class="card-columns">
+                    {% for article in articles %}
+                        <a href="{% url 'article_select' article.article.id %}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 style="color: black;" class="card-title">{{ article.article.title }}</h3>
+                                    <p class="card-text" style="font-size: 20px;">{{ article.article.hang }}</p>
+                                    <p class="card-text"><small class="text-muted">
+                                    <div>
+                                        <a href="{% url 'article_dislike' article.article.id %}">
+                                            <p class="pr-4 center inline right bold" style="color:#c32222;">
+                                                <i class="fas fa-times fs-20"></i><br>
+                                                REMOVE
+                                            </p>
+                                </div>
+                            </div>
+                        </a>
+
+                                    </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p>
+                            <b>
+                                Not yet article you like
+                            </b>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    {% if articles|length > 0 %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mb-5 pb-5 center">
+
+                <div class="row">
+                    <div class="pagination mt-5" style="margin: 0 auto;">
+                        <span class="step-links">
+                            {% if articles.has_previous %}
+                                <a class="btn btn-info" href="?page=1">&laquo; first</a>
+                                <a class="btn btn-info" href="?page={{ articles.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ articles.number }} / {{ articles.paginator.num_pages }}
+                            </span>
+
+                            {% if articles.has_next %}
+                                <a class="btn btn-info" href="?page={{ articles.next_page_number }}">next</a>
+                                <a class="btn btn-info" href="?page={{ articles.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

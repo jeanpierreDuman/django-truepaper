@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load embed_video_tags %}
+
+{% block title %}
+    Preview article
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                    <h1 style="pb-4">Article preview</h1>
+                    <hr>
+                    {% for article in articles %}
+                        <p>
+                            <span class="bold" style="color: #243d57">{{ article.title }}</span> <br>
+                            {{ article.text }}
+                        </p>
+                    {% empty %}
+                        <p>
+                            <b>Not preview yet</b>
+                        </p>
+                    {% endfor %}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+{% endblock %}

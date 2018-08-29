@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load blog_extras %}
+
+{% block title %}
+    Profile
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Secret question</h1>
+                <hr>
+                <form method="post">
+                  {% csrf_token %}
+                  {% for field in form %}
+                    <p>
+                      {{ field.label }} :
+                      {{ field|addclass:'form-control' }}
+                      {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                      {% endfor %}
+                    </p>
+                  {% endfor %}
+                  <button type="submit" class="btn btn-primary">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load blog_extras %}
+
+{% block title %}
+    Login
+    {{ block.super }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 style="pb-4">Login</h1>
+                <hr>
+                <form method="post">
+                {% csrf_token %}
+                <p>
+                    Username: <br>
+                    {{ form.username|addclass:'form-control' }}
+                </p>
+
+                <p>
+                    Password: <br>
+                    {{ form.password|addclass:'form-control' }}
+                </p>
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <button class="btn btn-primary" type="submit">Login</button>
+                </form>
+                <br>
+
+                <p>
+                    <a href="{% url 'forget_password' %}">forgotten password ?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
